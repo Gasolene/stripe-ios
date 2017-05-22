@@ -139,7 +139,8 @@ typedef NS_ENUM(NSUInteger, STPPaymentCardSection) {
     self.rememberMeCell = [[STPSwitchTableViewCell alloc] init];
     [self.rememberMeCell configureWithLabel:STPLocalizedString(@"Save for use in other apps", @"Label for the switch to enable Remember Me") delegate:self];
     [self reloadRememberMeCellAnimated:NO];
-    
+    [self.rememberMeCell setHidden:YES];
+
     self.rememberMePhoneCell = [[STPAddressFieldTableViewCell alloc] initWithType:STPAddressFieldTypePhone contents:nil lastInList:YES delegate:self];
     self.rememberMePhoneCell.caption = STPLocalizedString(@"Phone", nil);
     self.rememberMePhoneCell.contents = self.prefilledInformation.phone;
