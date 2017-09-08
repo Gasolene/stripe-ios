@@ -14,6 +14,11 @@
 @interface STPFixtures : NSObject
 
 /**
+ An Address object with all fields filled.
+ */
++ (STPAddress *)address;
+
+/**
  A PKPaymentObject with test payment data.
  */
 + (PKPayment *)applePayPayment;
@@ -27,6 +32,11 @@
  A CardParams object with a valid number, expMonth, expYear, and cvc.
  */
 + (STPCardParams *)cardParams;
+
+/**
+ A valid card object
+ */
++ (STPCard *)card;
 
 /**
  A Source object with type card
@@ -52,15 +62,13 @@
 + (STPPaymentConfiguration *)paymentConfiguration;
 
 /**
- A stateless API adapter that always retrieves the same customer object.
+ A customer-scoped ephemeral key that expires in 100 seconds.
  */
-+ (id<STPBackendAPIAdapter>)staticAPIAdapter;
++ (STPEphemeralKey *)ephemeralKey;
 
 /**
- A stateless API adapter that always retrieves the given customer.
- selectDefaultSource and attachSource immediately call their completion blocks
- with nil.
+ A customer-scoped ephemeral key that expires in 10 seconds.
  */
-+ (id<STPBackendAPIAdapter>)staticAPIAdapterWithCustomer:(STPCustomer *)customer;
++ (STPEphemeralKey *)expiringEphemeralKey;
 
 @end

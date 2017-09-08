@@ -10,6 +10,7 @@
 #import <Stripe/Stripe.h>
 
 #import "STPFixtures.h"
+#import "STPMocks.h"
 #import "STPLocalizationUtils+STPTestAdditions.h"
 
 @interface STPPaymentMethodsViewControllerLocalizationTests : FBSnapshotTestCase
@@ -29,14 +30,13 @@
     config.companyName = @"Test Company";
     config.requiredBillingAddressFields = STPBillingAddressFieldsFull;
     config.additionalPaymentMethods = STPPaymentMethodTypeAll;
-    config.smsAutofillDisabled = NO;
     STPTheme *theme = [STPTheme defaultTheme];
-    id apiAdapter = [STPFixtures staticAPIAdapter];
+    id customerContext = [STPMocks staticCustomerContext];
     id delegate = OCMProtocolMock(@protocol(STPPaymentMethodsViewControllerDelegate));
     [STPLocalizationUtils overrideLanguageTo:language];
     STPPaymentMethodsViewController *paymentMethodsVC = [[STPPaymentMethodsViewController alloc] initWithConfiguration:config
                                                                                                                  theme:theme
-                                                                                                            apiAdapter:apiAdapter
+                                                                                                       customerContext:customerContext
                                                                                                               delegate:delegate];
 
     UIViewController *rootVC = [UIViewController new];

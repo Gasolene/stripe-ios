@@ -9,15 +9,15 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import <Stripe/Stripe.h>
+#import "NSError+Stripe.h"
 #import "STPCard.h"
-#import "STPCheckoutAccount.h"
 #import "STPFixtures.h"
-#import "STPRememberMePaymentCell.h"
+#import "STPPaymentCardTextFieldCell.h"
 
 @interface STPAddCardViewController (Testing)
-@property(nonatomic)STPRememberMePaymentCell *paymentCell;
-@property(nonatomic)STPAPIClient *apiClient;
-@property(nonatomic)BOOL loading;
+@property (nonatomic) STPPaymentCardTextFieldCell *paymentCell;
+@property (nonatomic) STPAPIClient *apiClient;
+@property (nonatomic) BOOL loading;
 @end
 
 @interface STPToken (Testing)

@@ -7,12 +7,14 @@
 //
 
 #import <FBSnapshotTestCase/FBSnapshotTestCase.h>
+#import <OCMock/OCMock.h>
 #import <Stripe/Stripe.h>
 #import "STPSwitchTableViewCell.h"
 #import "STPAddCardViewController+Private.h"
 #import "STPAddressViewModel.h"
 #import "STPAddressFieldTableViewCell.h"
 #import "STPBundleLocator.h"
+#import "STPCardIOProxy.h"
 #import "STPFixtures.h"
 #import "STPLocalizationUtils.h"
 #import "STPLocalizationUtils+STPTestAdditions.h"
@@ -22,9 +24,8 @@
 @end
 
 @interface STPAddCardViewController (TestsPrivate)
-@property(nonatomic) UITableView *tableView;
-@property(nonatomic) BOOL forceEnableRememberMeForTesting;
-@property(nonatomic) STPAddressViewModel<STPAddressFieldTableViewCellDelegate> *addressViewModel;
+@property (nonatomic) UITableView *tableView;
+@property (nonatomic) STPAddressViewModel<STPAddressFieldTableViewCellDelegate> *addressViewModel;
 @end
 
 @implementation STPAddCardViewControllerLocalizationTests
@@ -36,11 +37,13 @@
 //}
 
 - (void)performSnapshotTestForLanguage:(NSString *)language delivery:(BOOL)delivery {
+    id mockCardIOProxy = OCMClassMock([STPCardIOProxy class]);
+    OCMStub([mockCardIOProxy isCardIOAvailable]).andReturn(YES);
+    
     STPPaymentConfiguration *config = [STPFixtures paymentConfiguration];
     config.companyName = @"Test Company";
     config.requiredBillingAddressFields = STPBillingAddressFieldsFull;
     config.additionalPaymentMethods = STPPaymentMethodTypeAll;
-    config.smsAutofillDisabled = NO;
     config.shippingType = (delivery) ? STPShippingTypeDelivery : STPShippingTypeShipping;
 
     [STPLocalizationUtils overrideLanguageTo:language];
@@ -52,7 +55,6 @@
     UINavigationController *navController = [UINavigationController new];
     navController.view.frame = CGRectMake(0, 0, 320, 750);
     [navController pushViewController:addCardVC animated:NO];
-    addCardVC.forceEnableRememberMeForTesting = YES;
     [navController.view layoutIfNeeded];
     navController.view.frame = CGRectMake(0, 0, 320, addCardVC.tableView.contentSize.height);
 
